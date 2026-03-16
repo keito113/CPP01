@@ -1,5 +1,5 @@
-NAME    := zombie
-SRCS    := Zombie.cpp main.cpp newZombie.cpp randomChump.cpp
+NAME    := ex03
+SRCS    := main.cpp HumanA.cpp HumanB.cpp Weapon.cpp
 OBJS    := $(SRCS:.cpp=.o)
 
 CXX     := c++
