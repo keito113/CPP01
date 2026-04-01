@@ -15,8 +15,4 @@ public:
 	void attack(void) const;
 };
 
-
-
-
-
 #endif
