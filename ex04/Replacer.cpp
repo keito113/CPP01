@@ -2,9 +2,12 @@
 #include <iostream>
 #include <fstream>
 
+static const std::streamoff MAX_FILE_SIZE = 50;
+
 static bool readFileContent(const std::string &filename, std::string &content)
 {
 	std::ifstream ifs;
+	std::streamoff fileSize;
 	char c;
 
 	content.clear();
@@ -14,6 +17,30 @@ static bool readFileContent(const std::string &filename, std::string &content)
 		std::cout << "Error: could not open input file." << std::endl;
 		return(false);
 	}
+	ifs.seekg(0, std::ios::end);
+	if(ifs.fail()){
+		std::cout << "Error: could not determine input file size." << std::endl;
+		return(false);
+	}
+
+	fileSize = static_cast<std::streamoff>(ifs.tellg());
+	if(fileSize < 0){
+		std::cout << "Error: could not determine input file size." << std::endl;
+		return(false);
+	}
+
+	if(fileSize > MAX_FILE_SIZE){
+		std::cout << "Error: input file is too large." << std::endl;
+		return(false);
+	}
+
+	ifs.seekg(0, std::ios::beg);
+	if(ifs.fail()){
+		std::cout << "Error: could not reset input file position." << std::endl;
+		return(false);
+	}
+
+	content.reserve(static_cast<std::string::size_type>(fileSize));
 	while(ifs.get(c))
 		content += c;
 	if(!ifs.eof())
